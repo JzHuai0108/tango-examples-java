@@ -21,8 +21,20 @@ import com.google.atap.tangoservice.TangoAreaDescriptionMetaData;
 import com.google.atap.tangoservice.TangoErrorException;
 import com.google.atap.tangoservice.TangoInvalidException;
 
+import com.google.atap.tango.reconstruction.Tango3dReconstruction;
+import com.google.atap.tango.reconstruction.Tango3dReconstructionConfig;
+import com.google.atap.tango.reconstruction.Tango3dReconstructionAreaDescription;
+import com.google.atap.tango.dataset.TangoDataset;
+
+
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
+
+import java.util.List;
+import java.util.Vector;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Saves the ADF on a background thread and shows a progress dialog while
@@ -71,6 +83,27 @@ public class SaveAdfTask extends AsyncTask<Void, Integer, String> {
         try {
             // Save the ADF.
             adfUuid = mTango.saveAreaDescription();
+
+            Log.i(TAG, "default export directory:" + TangoDataset.TANGO_DEFAULT_EXPORT_DIRECTORY);
+            Tango3dReconstructionConfig config = new Tango3dReconstructionConfig();
+
+            config.putBoolean(Tango3dReconstructionConfig.USE_SPACE_CLEARING, true);
+            config.putBoolean("use_floorplan", true);
+            config.putBoolean("use_floorplan_canonical_orientation", true);
+            Tango3dReconstruction mTango3dReconstruction = new Tango3dReconstruction(config);
+            TangoDataset dataset = new TangoDataset(TangoDataset.TANGO_DEFAULT_EXPORT_DIRECTORY,
+                    mTango.experimentalGetCurrentDatasetUuid());
+//            Tango3dReconstructionAreaDescription areaDescription =
+//                    Tango3dReconstructionAreaDescription.createFromDataset(dataset, null, null);
+
+            Log.i(TAG, "found dataset uuid " + mTango.experimentalGetCurrentDatasetUuid());
+
+            List<String> datasets = new Vector<String>(); // = mTango.experimentalListDatasets();
+            datasets.add("Witch");
+            for (int i = 0; i < datasets.size(); ++i) {
+                Log.i(TAG, "found dataset " + i + " name " + datasets.get(i));
+            }
+            Log.i(TAG, "found dataset count " + datasets.size());
 
             // Read the ADF Metadata, set the desired name, and save it back.
             TangoAreaDescriptionMetaData metadata = mTango.loadAreaDescriptionMetaData(adfUuid);

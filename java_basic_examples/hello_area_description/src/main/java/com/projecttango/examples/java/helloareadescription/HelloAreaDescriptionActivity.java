@@ -16,6 +16,8 @@
 
 package com.projecttango.examples.java.helloareadescription;
 
+import com.google.atap.tango.dataset.TangoDataset;
+import com.google.atap.tango.reconstruction.Tango3dReconstructionConfig;
 import com.google.atap.tangoservice.Tango;
 import com.google.atap.tangoservice.Tango.OnTangoUpdateListener;
 import com.google.atap.tangoservice.TangoAreaDescriptionMetaData;
@@ -204,6 +206,15 @@ public class HelloAreaDescriptionActivity extends Activity implements
                         fullUuidList.get(fullUuidList.size() - 1));
             }
         }
+
+        // Enable Dataset Recording.
+        config.putBoolean(TangoConfig.KEY_BOOLEAN_DATASETRECORDING, true);
+
+        config.putInt(TangoConfig.KEY_INT_DATASETRECORDING_MODE,
+                TangoConfig.TANGO_DATASETRECORDING_MODE_MOTION_TRACKING_AND_FISHEYE);
+
+        config.putString(TangoConfig.KEY_STRING_DATASETS_PATH, "/sdcard/temp");
+
         return config;
     }
 

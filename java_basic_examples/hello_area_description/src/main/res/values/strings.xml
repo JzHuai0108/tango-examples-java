@@ -40,6 +40,7 @@
     <string name="metadata_not_read">"Meta Data cannot be read"</string>
     <string name="motiontracking_permission">"Motion Tracking permission needed!"</string>
     <string name="arealearning_permission">"Area Learning permission needed!"</string>
+    <string name="exception_tango_permission">"Tango.PERMISSIONTYPE_DATASET required!"</string>
     <string name="no_uuid">"no ADFs"</string>
     <string name="number_of_adfs">"No of ADFs: "</string>
     <string name="na">"N/A"</string>
